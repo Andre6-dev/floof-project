@@ -1,0 +1,24 @@
+version: '3.8'
+name: floof-shop-microservices-dev
+services:
+  db-floof:
+    container_name: floof-db
+    image: postgres
+    environment:
+      POSTGRES_USER: devandre
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: floof-db
+    volumes:
+      - db-floof:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - db-floof
+    restart: unless-stopped
+
+networks:
+  db-floof:
+    driver: bridge
+
+volumes:
+  db-floof:

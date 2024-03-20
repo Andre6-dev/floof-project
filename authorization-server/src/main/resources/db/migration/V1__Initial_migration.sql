@@ -4,7 +4,7 @@ CREATE SEQUENCE IF NOT EXISTS floof_auth.user_sequence START WITH 1 INCREMENT BY
 
 CREATE TABLE floof_auth.roles
 (
-    role_id    BIGINT NOT NULL,
+    role_id    BIGINT NOT NULL DEFAULT nextval('floof_auth.role_sequence'::regclass),
     created_at TIMESTAMP WITHOUT TIME ZONE,
     updated_at TIMESTAMP WITHOUT TIME ZONE,
     is_deleted BOOLEAN,
@@ -16,7 +16,7 @@ CREATE TABLE floof_auth.roles
 
 CREATE TABLE floof_auth.users
 (
-    user_id                    BIGINT NOT NULL,
+    user_id                    BIGINT NOT NULL DEFAULT nextval('floof_auth.user_sequence'::regclass),
     created_at                 TIMESTAMP WITHOUT TIME ZONE,
     updated_at                 TIMESTAMP WITHOUT TIME ZONE,
     is_deleted                 BOOLEAN,
@@ -47,3 +47,7 @@ ALTER TABLE floof_auth.users_roles
 
 ALTER TABLE floof_auth.users_roles
     ADD CONSTRAINT fk_userol_on_user FOREIGN KEY (user_id) REFERENCES floof_auth.users (user_id);
+
+ALTER SEQUENCE floof_auth.role_sequence OWNED BY floof_auth.roles.role_id;
+
+ALTER SEQUENCE floof_auth.user_sequence OWNED BY floof_auth.users.user_id;
