@@ -155,6 +155,7 @@ public class AuthorizationSecurityConfig {
                 .redirectUri("http://127.0.0.1:9095/client/callback")
                 .redirectUri("https://oauthdebugger.com/debug")
                 .redirectUri("https://springone.io/authorized")
+                .postLogoutRedirectUri("http://127.0.0.1:4200/home")
                 .scope(OidcScopes.OPENID)
                 .clientSettings(clientSettings())
                 .build();
