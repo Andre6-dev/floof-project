@@ -5,8 +5,13 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
 
+logging:
+  level:
+    org.springframework.security: TRACE
+    org.springframework.oauth2: TRACE
+
 server:
-  port: 8081
+  port: 8082
 
 spring:
   application:
@@ -16,7 +21,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9000
+          issuer-uri: ${AUTHORIZATION_SERVER_URI:http://localhost:9000}
+
 
   r2dbc:
     url: r2dbc:postgresql://${DB_HOST:localhost:5432}/floofl-db

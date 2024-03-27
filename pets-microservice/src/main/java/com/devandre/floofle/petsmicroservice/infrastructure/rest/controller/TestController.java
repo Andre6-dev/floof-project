@@ -1,4 +1,4 @@
-package com.devandre.floofle.petsmicroservice.controller;
+package com.devandre.floofle.petsmicroservice.infrastructure.rest.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author Andre on 19/03/2024
+ * @author Andre on 25/03/2024
  * @project Floof Project
  */
 @RestController

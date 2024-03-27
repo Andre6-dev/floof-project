@@ -2,6 +2,7 @@ package com.devandre.floofle.authorizationserver.service;
 
 import com.devandre.floofle.authorizationserver.dto.CreateUserDto;
 import com.devandre.floofle.authorizationserver.dto.MessageDto;
+import com.devandre.floofle.authorizationserver.dto.UserResponseDto;
 import com.devandre.floofle.authorizationserver.entity.Role;
 import com.devandre.floofle.authorizationserver.entity.User;
 import com.devandre.floofle.authorizationserver.entity.enums.RoleName;
@@ -50,4 +51,16 @@ public class AuthUserService {
         return new MessageDto("User created successfully");
     }
 
+    public UserResponseDto getUserByUserName(String name) {
+
+        User user = userRepository.findByUsername(name)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return UserResponseDto.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .build();
+
+    }
 }
