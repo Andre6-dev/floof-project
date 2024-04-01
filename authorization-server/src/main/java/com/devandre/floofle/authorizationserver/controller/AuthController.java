@@ -39,15 +39,4 @@ public class AuthController {
 
         return ResponseEntity.ok(user);
     }
-
-    @PostMapping("/logout")
-    public String logoutOk(HttpSecurity http) throws Exception {
-        http.logout(
-                logout -> logout
-                        .deleteCookies("JSESSIONID")
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-        );
-        return "login?logout";
-    }
 }

@@ -91,6 +91,7 @@ public class AuthorizationSecurityConfig {
                 .redirectUri("http://127.0.0.1:9095/client/callback")
                 .redirectUri("https://oauthdebugger.com/debug")
                 .redirectUri("http://127.0.0.1:8090/login/oauth2/code/floofle-gateway")
+                .redirectUri("http://127.0.0.1:4200/dashboard")
                 .postLogoutRedirectUri("http://127.0.0.1:4200/home")
                 .scope("read")
                 .scope("write")
@@ -137,15 +138,20 @@ public class AuthorizationSecurityConfig {
         http.cors(Customizer.withDefaults());
 
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/css/**", "js/**", "/images/**", "/webjars/**", "/favicon.ico").permitAll()
+                        .requestMatchers("/login", "/error").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterAfter(filter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin(Customizer.withDefaults());
+                .formLogin(
+                        formLogin -> formLogin
+                                .loginPage("/login")
+                                .permitAll()
+                );
 
         http.logout(
-                logout -> logout.logoutSuccessUrl("http://localhost:4200/home")
+                logout -> logout.logoutSuccessUrl("http://127.0.0.1:4200/home")
         );
         http.csrf((csrf) -> csrf.ignoringRequestMatchers("/auth/**"));
 

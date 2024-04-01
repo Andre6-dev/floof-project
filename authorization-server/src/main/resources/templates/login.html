@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page - Floofle Project - Login Page</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+</head>
+<body>
+<div class="container">
+    <img class="image-locker" th:src="@{/images/perrito-sidebar.jpg}" alt="SmartSave Money locker">
+    <div class="detalis-main">
+        <div class="login-main">
+            <img class="logo" th:src="@{/images//logo-floofle.jpeg}" alt="SmartSave" width="228" height="33">
+            <h1>Welcome Back</h1>
+            <p>Welcome Back , Please enter Your details</p>
+        </div>
+        <div class="switch-details">
+            <div class="singin btn-switch">Sign in</div>
+            <div class="singup btn-switch">Sign up</div>
+        </div>
+        <form th:action="@{/login}" method="post">
+            <div class="form-details">
+
+                <div class="input-main">
+                    <svg class="icon-email" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
+                         width="20"
+                         height="20">
+                        <path
+                                d="M19,1H5A5.006,5.006,0,0,0,0,6V18a5.006,5.006,0,0,0,5,5H19a5.006,5.006,0,0,0,5-5V6A5.006,5.006,0,0,0,19,1ZM5,3H19a3,3,0,0,1,2.78,1.887l-7.658,7.659a3.007,3.007,0,0,1-4.244,0L2.22,4.887A3,3,0,0,1,5,3ZM19,21H5a3,3,0,0,1-3-3V7.5L8.464,13.96a5.007,5.007,0,0,0,7.072,0L22,7.5V18A3,3,0,0,1,19,21Z"/>
+                    </svg>
+                    <div class="be-main"></div>
+                    <div class="input-box">
+                        <input id="username" name="username" type="text" class="input" required="">
+                        <label for="username">Username</label>
+                    </div>
+                    <svg class="icon-continue" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                         fill="currentColor"
+                         viewBox="0 0 16 16">
+                        <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    </svg>
+                </div>
+                <div class="input-main">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16">
+                        <path
+                                d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3h58.3c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24V250.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1H222.6c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                    </svg>
+                    <div class="be-main"></div>
+                    <div class="input-box">
+                        <input id="pass" type="password" name="password" class="input" required="">
+                        <label for="pass">Password</label>
+                    </div>
+                    <svg class="icon-continue" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                         fill="currentColor"
+                         viewBox="0 0 16 16">
+                        <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    </svg>
+                </div>
+            </div>
+            <button class="continue" type="submit">Login</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
