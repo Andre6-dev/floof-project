@@ -17,21 +17,21 @@ public class TestController {
         return "login";
     }
 
-    @GetMapping("/logout")
-    public String logout() {
-        return "logout";
-    }
-
-    @PostMapping("/logout")
-    public String logoutOk(HttpSecurity http) throws Exception {
-        http.logout(
-                logout -> logout
-                        .deleteCookies("JSESSIONID")
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-        );
-        return "login?logout=true";
-    }
+//    @GetMapping("/logout")
+//    public String logout() {
+//        return "logout";
+//    }
+//
+//    @PostMapping("/logout")
+//    public String logoutOk(HttpSecurity http) throws Exception {
+//        http.logout(
+//                logout -> logout
+//                        .deleteCookies("JSESSIONID")
+//                        .invalidateHttpSession(true)
+//                        .clearAuthentication(true)
+//        );
+//        return "dashboard";
+//    }
 
 
 }

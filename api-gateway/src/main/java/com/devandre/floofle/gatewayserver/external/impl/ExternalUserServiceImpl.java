@@ -21,16 +21,19 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Slf4j
 public class ExternalUserServiceImpl implements ExternalUserService {
 
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
+
+
 
     public ExternalUserServiceImpl(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:9000").build();
+        this.webClientBuilder = webClientBuilder;
     }
 
     @Override
     public Mono<UserInfoResponseDto> getUser(String auth) {
-        return webClient.get()
-                .uri(uriBuilder -> uriBuilder.path("/auth")
+        return webClientBuilder.baseUrl("http://localhost:9000")
+                .build().get()
+                .uri(uriBuilder -> uriBuilder.path("/auth/users")
                         .build()
                 )
                 .header(AUTHORIZATION, auth)

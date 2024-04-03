@@ -37,10 +37,10 @@ public class ResourceServerConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .cors(ServerHttpSecurity.CorsSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/breeds").hasAuthority("write")
+//                        .pathMatchers("/breeds").hasAuthority("write")
                         .pathMatchers(SecurityConstants.AUTH_WHITELIST).permitAll()
                         .anyExchange().authenticated()
                 )

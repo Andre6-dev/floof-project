@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
  * @project Floof Project
  */
 @RestController
-@RequestMapping("/breeds")
+@RequestMapping("/api/v1")
 public class BreedController {
 
     private final BreedService breedService;
@@ -23,7 +23,7 @@ public class BreedController {
         this.breedService = breedService;
     }
 
-    @GetMapping()
+    @GetMapping("/breeds")
     public Mono<ResponseEntity<Object>> getAllBreeds() {
         return ResponseHandler.generateMonoResponse(HttpStatus.OK,
                 breedService.getAllBreeds()

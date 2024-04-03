@@ -5,14 +5,13 @@ spring:
     oauth2:
       client:
         registration:
-          ecommerce-gateway:
+          floofle-gateway:
             provider: spring
             client-id: floofle-client
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:8090/login/oauth2/code/{registrationId}"
+            redirect-uri: http://127.0.0.1:8090/login/oauth2/code/floofle-gateway
             scope: read,write,openid,profile
-            client-name: floofle-gateway
         provider:
           spring:
             issuer-uri: http://localhost:9000
@@ -23,7 +22,7 @@ spring:
         - id: pets-service-route
           uri: lb://pets-microservice
           predicates:
-            - Path=/api/v1/pets/**
+            - Path=/api/v1/breeds/**
           filters:
             - name: Retry
               args:
@@ -41,6 +40,14 @@ spring:
                 key-resolver: "#{@userKeyResolver}"
                 redis-rate-limiter.replenishRate: 1
                 redis-rate-limiter.burstCapacity: 1
+
+        - id: angular
+          uri: http://localhost:4200/
+          predicates:
+              - Path=/**
+
+      default-filters:
+        - TokenRelay=
 
 
   data:
