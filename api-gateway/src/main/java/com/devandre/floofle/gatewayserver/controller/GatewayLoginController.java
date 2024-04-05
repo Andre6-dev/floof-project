@@ -40,6 +40,8 @@ public class GatewayLoginController {
 
         Mono<UserInfoResponseDto> userResponse = externalUserService.getUser(getAuth(jwtToken));
 
+        log.info("user info received from authorization server with value : {}", userResponse);
+
         TokenInfoResponseDto tokenInfo = TokenInfoResponseDto.builder()
                 .accessToken(client.getAccessToken().getTokenValue())
                 .refreshToken(Objects.requireNonNull(client.getRefreshToken())

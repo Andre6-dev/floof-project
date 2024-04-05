@@ -4,7 +4,11 @@ import com.devandre.floofle.gatewayserver.dto.response.UserInfoResponseDto;
 import com.devandre.floofle.gatewayserver.external.ExternalUserService;
 import com.devandre.floofle.gatewayserver.external.response.UserResponseDto;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
@@ -21,19 +25,16 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Slf4j
 public class ExternalUserServiceImpl implements ExternalUserService {
 
-    private final WebClient.Builder webClientBuilder;
-
-
-
-    public ExternalUserServiceImpl(WebClient.Builder webClientBuilder) {
-        this.webClientBuilder = webClientBuilder;
-    }
+    @Autowired
+    private WebClient.Builder webClientBuilder;
 
     @Override
+    @CircuitBreaker(name = "authorizationServer",fallbackMethod = "authorizationServerFallback")
+    @Retry(name = "authorizationServer")
     public Mono<UserInfoResponseDto> getUser(String auth) {
-        return webClientBuilder.baseUrl("http://localhost:9000")
-                .build().get()
+        return webClientBuilder.build().get()
                 .uri(uriBuilder -> uriBuilder.path("/auth/users")
+                        .host("authorization-server")
                         .build()
                 )
                 .header(AUTHORIZATION, auth)
@@ -41,6 +42,7 @@ public class ExternalUserServiceImpl implements ExternalUserService {
                 .bodyToMono(UserResponseDto.class)
                 .map(userResponseDto -> {
                     UserInfoResponseDto dto = new UserInfoResponseDto();
+                    BeanUtils.copyProperties(userResponseDto,dto);
                     dto.setId(userResponseDto.getId());
                     dto.setUsername(userResponseDto.getUsername());
                     dto.setEmail(userResponseDto.getEmail());

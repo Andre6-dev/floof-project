@@ -28,11 +28,6 @@ public class AuthController {
                 .body(authUserService.createUser(dto));
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("Test LOGOUT API!");
-    }
-
     @GetMapping("/users")
     public ResponseEntity<UserResponseDto> getAuthenticatedUser(Authentication authentication) {
         UserResponseDto user = authUserService.getUserByUserName(authentication.getName());

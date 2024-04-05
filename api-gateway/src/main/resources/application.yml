@@ -18,36 +18,37 @@ spring:
 
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        - TokenRelay=
+        - SaveSession
       routes:
         - id: pets-service-route
           uri: lb://pets-microservice
           predicates:
             - Path=/api/v1/breeds/**
-          filters:
-            - name: Retry
-              args:
-                retries: 5
-                methods: GET
-                backoff:
-                  firstBackoff: 50ms
-                  maxBackOff: 400ms
-            - name: CircuitBreaker
-              args:
-                name: petsService
-                fallbackUri: forward:/pets-service-fallback
-            - name: RequestRateLimiter
-              args:
-                key-resolver: "#{@userKeyResolver}"
-                redis-rate-limiter.replenishRate: 1
-                redis-rate-limiter.burstCapacity: 1
+#          filters:
+#            - name: Retry
+#              args:
+#                retries: 5
+#                methods: GET
+#                backoff:
+#                  firstBackoff: 50ms
+#                  maxBackOff: 400ms
+#            - name: CircuitBreaker
+#              args:
+#                name: petsService
+#                fallbackUri: forward:/pets-service-fallback
+#            - name: RequestRateLimiter
+#              args:
+#                key-resolver: "#{@userKeyResolver}"
+#                redis-rate-limiter.replenishRate: 1
+#                redis-rate-limiter.burstCapacity: 1
 
         - id: angular
           uri: http://localhost:4200/
           predicates:
               - Path=/**
-
-      default-filters:
-        - TokenRelay=
 
 
   data:

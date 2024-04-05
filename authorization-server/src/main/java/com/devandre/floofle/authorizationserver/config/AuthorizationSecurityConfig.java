@@ -92,7 +92,7 @@ public class AuthorizationSecurityConfig {
                 .redirectUri("https://oauthdebugger.com/debug")
                 .redirectUri("http://127.0.0.1:8090/login/oauth2/code/floofle-gateway")
                 .redirectUri("http://127.0.0.1:4200/dashboard")
-                .postLogoutRedirectUri("http://127.0.0.1:8090/dashboard")
+                .postLogoutRedirectUri("http://127.0.0.1:8090/landing")
                 .scope("read")
                 .scope("write")
                 .scope("internal")
@@ -147,6 +147,7 @@ public class AuthorizationSecurityConfig {
                 .formLogin(
                         formLogin -> formLogin
                                 .loginPage("/login")
+//                                .successHandler((request, response, authentication) -> response.sendRedirect("http://127.0.0.1:8090/dashboard"))
                                 .permitAll()
                 );
 

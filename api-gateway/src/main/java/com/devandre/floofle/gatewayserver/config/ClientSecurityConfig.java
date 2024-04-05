@@ -35,6 +35,7 @@ public class ClientSecurityConfig {
                 .authorizeExchange(
                         exchanges -> exchanges
                                 .pathMatchers("/**").permitAll()
+                                .pathMatchers("/logout").permitAll()
                                 .pathMatchers("/authenticate").authenticated()
                                 .anyExchange().permitAll()
                 );
@@ -45,15 +46,15 @@ public class ClientSecurityConfig {
                 .logout(
                         logout -> logout
                                 .logoutUrl("/logout")
-                                .logoutSuccessHandler(logoutSuccessHandler(repository)
-                ));
+                                .logoutSuccessHandler(logoutSuccessHandler(repository))
+                );
         return http.build();
     }
 
     @Bean
     ServerLogoutSuccessHandler logoutSuccessHandler(ReactiveClientRegistrationRepository repository) {
         OidcClientInitiatedServerLogoutSuccessHandler oidcLogoutHandler = new OidcClientInitiatedServerLogoutSuccessHandler(repository);
-        oidcLogoutHandler.setPostLogoutRedirectUri("http://127.0.0.1:8090/dashboard");
+        oidcLogoutHandler.setPostLogoutRedirectUri("http://127.0.0.1:8090/landing");
         return oidcLogoutHandler;
     }
 
