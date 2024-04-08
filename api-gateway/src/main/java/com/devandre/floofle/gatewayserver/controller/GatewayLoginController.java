@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2Aut
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.result.view.RedirectView;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -59,5 +60,10 @@ public class GatewayLoginController {
                     return tokenInfoResponseDto;
                 })
                 .log();
+    }
+
+    @GetMapping("/sessionId")
+    public Mono<String> getSessionId(@AuthenticationPrincipal OidcUser user) {
+        return Mono.just(user.getName());
     }
 }
