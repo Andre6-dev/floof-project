@@ -19,8 +19,6 @@ public class RedirectController {
 
     @GetMapping("/logged-out")
     public Mono<RedirectView> logout() {
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/landing");
-        return Mono.just(redirectView);
+        return Mono.just(new RedirectView("/dashboard"));
     }
 }

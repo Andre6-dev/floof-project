@@ -139,7 +139,7 @@ public class AuthorizationSecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "js/**", "/images/**", "/webjars/**", "/favicon.ico").permitAll()
-                        .requestMatchers("/login", "/error").permitAll()
+                        .requestMatchers("/login", "/error", "/logged-out").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -147,12 +147,16 @@ public class AuthorizationSecurityConfig {
                 .formLogin(
                         formLogin -> formLogin
                                 .loginPage("/login")
-                                .successHandler((request, response, authentication) -> response.sendRedirect("http://127.0.0.1:8090/dashboard"))
+//                                .successHandler((request, response, authentication) -> response.sendRedirect("http://127.0.0.1:8090/dashboard"))
                                 .permitAll()
                 );
 
 //        http.logout(
-//                logout -> logout.logoutSuccessUrl("http://127.0.0.1:8090/home")
+//                logout -> logout.logoutSuccessUrl("http://127.0.0.1:8090/logged-out")
+//                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
+//                        .deleteCookies("JSESSIONID")
+//                        .invalidateHttpSession(true)
+//                        .clearAuthentication(true)
 //        );
         http.csrf((csrf) -> csrf.ignoringRequestMatchers("/auth/**"));
 

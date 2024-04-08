@@ -30,7 +30,7 @@ public class TestController {
 //                        .invalidateHttpSession(true)
 //                        .clearAuthentication(true)
 //        );
-//        return "dashboard";
+//        return "login?logout";
 //    }
 
 

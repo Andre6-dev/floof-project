@@ -27,7 +27,7 @@ public class BeanConfig {
         cors.addAllowedHeader("*");
         cors.addAllowedMethod("*");
         cors.setAllowCredentials(true);
-        cors.addAllowedOrigin("http://127.0.0.1:4200");
+        cors.addAllowedOrigin("http://127.0.0.1:8090");
         source.registerCorsConfiguration("/**", cors);
         return source;
     }

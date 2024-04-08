@@ -1,5 +1,6 @@
 package com.devandre.floofle.gatewayserver.config;
 
+import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,41 +28,43 @@ import org.springframework.security.web.server.authentication.logout.ServerLogou
 @EnableWebFluxSecurity
 public class ClientSecurityConfig {
 
-    private final ReactiveClientRegistrationRepository repository;
-
-    public ClientSecurityConfig(ReactiveClientRegistrationRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private ReactiveClientRegistrationRepository clientRegistrationRepository;
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, ServerOAuth2AuthorizationRequestResolver resolver) {
-        http.
-                csrf(ServerHttpSecurity.CsrfSpec::disable)
+        http
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .cors(ServerHttpSecurity.CorsSpec::disable)
                 .authorizeExchange(
                         exchanges -> exchanges
                                 .pathMatchers("/**").permitAll()
-                                .pathMatchers("/logout").permitAll()
+                                .pathMatchers("/logged-out").permitAll()
                                 .pathMatchers("/authenticate").authenticated()
-                                .anyExchange().permitAll()
-                );
-        http.oauth2Login(auth ->
-                auth.authorizationRequestResolver(resolver)
-        );
-        http.oauth2Client(Customizer.withDefaults())
-                .logout(
-                        logout -> logout
-                                .logoutUrl("/logout")
-                                .logoutSuccessHandler(logoutSuccessHandler(repository))
-                );
+                                .anyExchange().authenticated()
+                ).
+                oauth2Login(auth ->
+                        auth.authorizationRequestResolver(resolver)
+                                .authenticationSuccessHandler(new CustomServerAuthenticationSuccessHandler("/dashboard"))
+                )
+                .oauth2Client(Customizer.withDefaults())
+                        .logout(
+                                logout -> logout
+                                        .logoutUrl("/logout")
+                                        .logoutSuccessHandler(oidcLogoutSuccessHandler())
+                        );
         return http.build();
     }
 
-    @Bean
-    ServerLogoutSuccessHandler logoutSuccessHandler(ReactiveClientRegistrationRepository repository) {
-        OidcClientInitiatedServerLogoutSuccessHandler oidcLogoutHandler = new OidcClientInitiatedServerLogoutSuccessHandler(repository);
-        oidcLogoutHandler.setPostLogoutRedirectUri("http://127.0.0.1:8090/logged-out");
-        return oidcLogoutHandler;
+    private ServerLogoutSuccessHandler oidcLogoutSuccessHandler() {
+        OidcClientInitiatedServerLogoutSuccessHandler oidcLogoutSuccessHandler =
+                new OidcClientInitiatedServerLogoutSuccessHandler(this.clientRegistrationRepository);
+
+        // Sets the location that the End-User's User Agent will be redirected to
+        // after the logout has been performed at the Provider
+        oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}/logged-out");
+
+        return oidcLogoutSuccessHandler;
     }
 
     @Bean
